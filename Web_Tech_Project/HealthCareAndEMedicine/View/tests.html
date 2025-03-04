@@ -1,0 +1,28 @@
+
+<html>
+<head>
+    <title>Taste</title>
+    <link rel="stylesheet" type="text/css" href="../Static/css/searchDoctors.css">
+</head>
+<body>
+    <h2>TASTE</h2>
+    <form method="post" action="../Controller/tests.php">
+       
+        <label for="search-bar">Search:</label>
+        <input type="text" id="search-bar" name="name" placeholder="Enter taste name">
+        <select id="search-option" name="search-option">
+
+            <option value="name">Search by Name</option>
+            <option value="hospital">Search by Hospital</option>
+
+        </select>
+        <input type="submit" value="Search">
+    </form>
+    <table>
+        <tr>
+            <td><button onclick="location.href='home.html'">Back</button></td>
+        </tr>
+    </table>
+
+</body>
+</html>

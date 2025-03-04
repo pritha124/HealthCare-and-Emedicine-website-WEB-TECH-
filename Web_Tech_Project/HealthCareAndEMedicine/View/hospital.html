@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Hospital Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 500px;
+        }
+
+        h1 {
+            color: #113a80;
+            margin-bottom: 20px;
+        }
+
+        #searchInput {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #113a80;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0c2d66;
+        }
+
+        .hospital-item {
+            text-align: left;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+            }
+
+            #searchInput {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Hospital Search</h1>
+        <input type="text" id="searchInput" placeholder="Search hospital..." onkeyup="searchHospitals()">
+        <button onclick="searchHospitals()">Search</button>
+
+        <div id="hospitalResults" style="margin-top: 20px;"></div>
+        <button onclick="addSelectedHospitals()" style="margin-top: 20px;">Next</button>
+    </div>
+
+    <script>
+        function searchHospitals() {
+            const searchTerm = document.getElementById('searchInput').value;
+
+            fetch(`../controller/hospitalController.php?search=${searchTerm}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultsDiv = document.getElementById('hospitalResults');
+                    resultsDiv.innerHTML = '';
+
+                    data.forEach(hospital => {
+                        const div = document.createElement('div');
+                        div.className = 'hospital-item';
+
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.id = `hospital-${hospital.id}`;
+                        checkbox.value = JSON.stringify(hospital);
+
+                        const label = document.createElement('label');
+                        label.setAttribute('for', `hospital-${hospital.id}`);
+                        label.textContent = `${hospital.name} - ${hospital.address} - ${hospital.hotline_number}`;
+
+                        div.appendChild(checkbox);
+                        div.appendChild(label);
+                        resultsDiv.appendChild(div);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function addSelectedHospitals() {
+            const selectedHospitals = [];
+            const checkboxes = document.querySelectorAll('#hospitalResults input[type="checkbox"]:checked');
+
+            checkboxes.forEach(checkbox => {
+                selectedHospitals.push(JSON.parse(checkbox.value));
+            });
+
+            localStorage.setItem('selectedHospitals', JSON.stringify(selectedHospitals));
+
+            window.location.href = "hospitalinfo.html";
+        }
+    </script>
+</body>
+
+</html>

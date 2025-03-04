@@ -1,0 +1,56 @@
+<?php
+    // Start the session
+    session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services</title>
+    <link rel="stylesheet" type="text/css" href="../Static/css/service.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Our Clinic Services</h1>
+    </header>
+    
+    <nav>
+        <table width="100%">
+            <tr>
+                <td><button onclick="location.href='home.html'">Home Page</button></td>
+                <td><button onclick="location.href='Department.html'">Doctors</button></td>
+                <td><button onclick="location.href='medicine.html'">Medicine</button></td>
+                <td><button onclick="location.href='faq.html'">FAQ</button></td>
+                <td><button onclick="location.href='hospital.html'">Hospitals</button></td>
+                <td><button onclick="location.href='taste.html'">Taste</button></td>
+                <td><button onclick="location.href='contractUs.html'">Contract Us</button></td>
+                <td><button onclick="location.href='signUp.html'">Sign Up</button></td>
+                <td><button onclick="location.href='logIn.html'">Log in</button></td>
+            </tr>
+        </table>
+    </nav>
+
+    <main>
+        <section class="services">
+            <h2>Our Medical Services</h2>
+            <p>We offer top-quality healthcare services to ensure your well-being.</p>
+        </section>
+        
+        <section class="service-buttons">
+            <div class="service-option">
+                <img src="../Static/img/doc.jpg" alt="Doctors">
+                <button onclick="location.href='Department.html'">Doctors</button>
+            </div>
+            <div class="service-option">
+                <img src="../Static/img/hospital.jpg" alt="Hospitals">
+                <button onclick="location.href='hospital.html'">Hospitals</button>
+            </div>
+            <div class="service-option">
+                <img src="../Static/img/taste.jpg" alt="Taste">
+                <button onclick="location.href='taste.html'">Taste</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

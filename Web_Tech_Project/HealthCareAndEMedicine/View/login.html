@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" type="text/css" href="../Static/css/login.css">
+    <script>
+        function ajaxLogin() {
+            let username = document.getElementById('username').value.trim();
+            let password = document.getElementById('password').value.trim();
+
+            // Create a JSON object with the login data
+            let json = {
+                'username': username,
+                'password': password
+            };
+
+            // Convert JSON object to string
+            let loginData = JSON.stringify(json);
+
+            // Create an XMLHttpRequest object
+            let xhttp = new XMLHttpRequest();
+            xhttp.open('POST', '../Controller/login.php', true);
+
+            // Set the appropriate header for sending JSON data
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            // Send the JSON string
+            xhttp.send(loginData);
+
+            // Handle the server response
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let response = JSON.parse(this.responseText);
+
+                    if (response.status === "success") {
+                        alert(response.message);
+                        window.location.href = "../View/userProfile.php";
+                    } else {
+                        document.getElementById('responseMessage').innerHTML = response.message;
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<form onsubmit="event.preventDefault(); ajaxLogin();">
+    <table align="center">
+        <h1 align="center">Login Page</h1>
+        <tr>
+            <td><label for="username">Username:</label></td>
+            <td><input type="text" name="username" id="username"></td>
+        </tr>
+        <tr>
+            <td><label for="password">Password:</label></td>
+            <td><input type="password" name="password" id="password"></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <a href="forgetPassword.html">Forget Password</a>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" onclick="location.href='home.html'">Back</button></td>
+            <td><input type="submit" value="Login" /></td>
+        </tr>
+    </table>
+    <p><b><i>If you are an Admin, go to :</i></b></p><a href="../View/adminLogin.html">Admin Login</a><br>
+    <p>If you don't have an account, Please go to :</p><a href="../View/signup.html">Sign Up</a>
+</form>
+<div id="responseMessage" style="text-align: center; margin-top: 20px; color: red;"></div>
+</body>
+</html>

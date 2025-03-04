@@ -1,0 +1,95 @@
+<html>
+<head>
+    <title>Admin Login Page</title>
+    <link rel="stylesheet" type="text/css" href="../Static/css/adminLogin.css">
+
+    <script>
+        function validateLoginForm() {
+            let id = document.getElementById("id").value.trim();
+            let username = document.getElementById("username").value.trim();
+            let password = document.getElementById("password").value.trim();
+            let valid = true;
+            let message = "";
+            if (id === "") {
+                valid = false;
+                message += "Please enter your ID.\n";
+            }
+            if (username === "") {
+                valid = false;
+                message += "Please enter your username.\n";
+            }
+            if (password === "") {
+                valid = false;
+                message += "Please enter your password.\n";
+            }
+
+            if (!valid) {
+                alert(message);
+            }
+            return valid;
+        }
+
+        function ajaxAdminLogin() {
+            // Validate the form inputs first
+            if (!validateLoginForm()) {
+                return false;
+            }
+
+            // Get the input values
+            let id = document.getElementById("id").value;
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+
+            // Create an XMLHttpRequest object
+            let xhttp = new XMLHttpRequest();
+
+            // Set up the AJAX request
+            xhttp.open("POST", "../Controller/adminLogin.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+            // Send the form data (corrected the format)
+            xhttp.send('id=' + id + '&username=' + username + '&password=' + password);
+
+            // Handle the server response
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    if (this.responseText.startsWith("Success")) {
+                        // Handle successful login
+                        alert("Login successful!");
+                        window.location.href = "../View/adminProfile.php";
+                    } else {
+                        // Display error message
+                        document.getElementById("responseMessage").innerHTML = this.responseText;
+                    }
+                }
+            };
+        }
+    </script>
+</head>
+<body>
+
+<form onsubmit="event.preventDefault(); ajaxAdminLogin();">
+    <table align="center">
+        <h1 id="head" align="center">Login Page: Admins</h1>
+        <tr>
+            <td><label for="id">ID:</label></td>
+            <td><input type="number" name="id" id="id"></td>
+        </tr>
+        <tr>
+            <td><label for="username">Username:</label></td>
+            <td><input type="text" name="username" id="username"></td>
+        </tr>
+        <tr>
+            <td><label for="password">Password:</label></td>
+            <td><input type="password" name="password" id="password"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" onclick="location.href='home.html'">Back</button></td>
+            <td><input type="submit" name="" value="Log in" /></td>
+        </tr>
+    </table>
+    <div id="responseMessage" style="text-align: center; margin-top: 20px; color: red;"></div>
+</form>
+</body>
+</html>

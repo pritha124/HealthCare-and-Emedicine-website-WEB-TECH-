@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Hospital Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #113a80;
+        }
+
+        h2 {
+            color: #113a80;
+        }
+
+        .hospital-info {
+            margin-top: 20px;
+        }
+
+        .hospital-info p {
+            font-size: 1.2em;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin-top: 20px;
+            background-color: #113a80;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0c2d66;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Selected Hospital Information</h1>
+
+        <div id="hospitalDetails" class="hospital-info"></div>
+
+        <button onclick="goBackToHospitalSearch()">Back to Search</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectedHospitals = JSON.parse(localStorage.getItem('selectedHospitals')) || [];
+
+            if (selectedHospitals.length === 0) {
+                document.getElementById('hospitalDetails').innerHTML = '<p>No hospital selected.</p>';
+                return;
+            }
+
+            const detailsDiv = document.getElementById('hospitalDetails');
+            selectedHospitals.forEach(hospital => {
+                detailsDiv.innerHTML += `
+                    <h2>${hospital.name}</h2>
+                    <p><strong>Address:</strong> ${hospital.address}</p>
+                    <p><strong>Hotline:</strong> ${hospital.hotline_number}</p>
+                    <p><strong>Available Tests:</strong> ${hospital.available_tests}</p>
+                    <p><strong>Doctors:</strong> ${hospital.doctors}</p>
+                `;
+            });
+        });
+
+        function goBackToHospitalSearch() {
+            window.location.href = "hospital.html";
+        }
+    </script>
+</body>
+
+</html>

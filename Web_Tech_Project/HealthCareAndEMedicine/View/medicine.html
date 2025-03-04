@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Medicine Order Form</title>
+    
+    <style>
+       
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #dbdccebf; 
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        color: #113a80;
+    }
+
+    h3 {
+        margin-top: 20px;
+        color: #113a80; 
+    }
+
+    #searchInput {
+        width: 80%;
+        max-width: 400px;
+        padding: 10px;
+        margin: 20px auto;
+        display: block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    button {
+        padding: 10px 20px;
+        margin: 10px auto;
+        display: block;
+        font-size: 16px;
+        color: #fff;
+        background-color: #113a80;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0c2d66;
+    }
+    #medicineResults {
+        margin: 20px auto;
+        width: 80%;
+        max-width: 600px;
+        background-color: rgb(237, 214, 214);
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); 
+    }
+
+    .medicine-item {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+    }
+
+    .medicine-item input {
+        margin-right: 10px;
+    }
+
+    .medicine-item label {
+        font-size: 16px;
+        color: #555; 
+    }
+
+    #selectedItemsList {
+        list-style: none;
+        padding: 0;
+        margin: 20px auto;
+        width: 80%;
+        max-width: 600px;
+        background-color: rgb(237, 214, 214); 
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    #selectedItemsList li {
+        margin: 5px 0;
+        font-size: 16px;
+        color: #555; 
+    }
+</style>
+
+    </style>
+</head>
+
+<body>
+    <h1>Medicine Search</h1>
+
+    <input type="text" id="searchInput" placeholder="Search medicine..." onkeyup="searchMedicines()">
+    <button onclick="searchMedicines()">Search</button>
+
+    <div id="medicineResults"></div>
+    <button onclick="addSelectedItems()">Add Selected Items</button>
+
+    <h3 align="center">Selected Items</h3>
+    <ul id="selectedItemsList"></ul>
+
+    <button onclick="goToOrderPage()">Next</button>
+
+    <script>
+        function searchMedicines() {
+            const searchTerm = document.getElementById('searchInput').value;
+
+            fetch(`/demoproject/controller/medicineController.php?search=${searchTerm}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultsDiv = document.getElementById('medicineResults');
+                    resultsDiv.innerHTML = '';
+
+                    data.forEach(medicine => {
+                        const div = document.createElement('div');
+                        div.className = 'medicine-item';
+
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.id = `medicine-${medicine.id}`;
+                        checkbox.value = JSON.stringify(medicine); 
+
+                        const label = document.createElement('label');
+                        label.setAttribute('for', `medicine-${medicine.id}`);
+                        label.textContent = `${medicine.name} - ${medicine.generic_name} (${medicine.mg}mg) - $${medicine.unit_price}`;
+
+                        div.appendChild(checkbox);
+                        div.appendChild(label);
+                        resultsDiv.appendChild(div);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function addSelectedItems() {
+            const selectedItems = [];
+            const checkboxes = document.querySelectorAll('#medicineResults input[type="checkbox"]:checked');
+
+            checkboxes.forEach(checkbox => {
+                selectedItems.push(JSON.parse(checkbox.value)); 
+            });
+            localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+
+            const selectedItemsList = document.getElementById('selectedItemsList');
+            selectedItemsList.innerHTML = '';  
+            selectedItems.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - $${item.unit_price}`;
+                selectedItemsList.appendChild(li);
+            });
+        }
+
+        function goToOrderPage() {
+            window.location.href = "orderType.html";
+        }
+    </script>
+</body>
+
+</html>

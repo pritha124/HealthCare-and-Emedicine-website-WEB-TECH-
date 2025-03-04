@@ -1,0 +1,96 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+header {
+    background-color: #0073e6;
+    color: white;
+    padding: 20px;
+    font-size: 24px;
+}
+
+nav table {
+    width: 100%;
+    background-color: #005bb5;
+    padding: 15px 0;
+}
+
+nav button {
+    width: 150px;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: white;
+    color: #005bb5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+nav button:hover {
+    background-color: #003f7f;
+    color: white;
+}
+
+.services {
+    padding: 50px;
+    background-color: white;
+}
+
+.services h2 {
+    color: #005bb5;
+    font-size: 28px;
+}
+
+.services p {
+    font-size: 18px;
+    color: #333;
+}
+
+
+.service-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px 0;
+    background-color: #e6f2ff;
+}
+
+.service-option {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+}
+
+.service-option img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.service-option button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #005bb5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.service-option button:hover {
+    background-color: #003f7f;
+}

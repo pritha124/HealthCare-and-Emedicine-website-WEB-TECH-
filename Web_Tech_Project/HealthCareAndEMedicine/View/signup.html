@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="../Static/css/signup.css">
+    <script>
+        function validateForm() {
+            let form = document.forms["signupForm"];
+            let fields = ["user_name", "password", "cpassword", "email", "phone", "gender", "address", "dob", "blood_group"];
+            let valid = true;
+            let message = "";
+
+            // Iterate over each required field
+            fields.forEach(field => {
+                const element = form[field];
+                if (field === "gender") {
+                    // Check if a gender is selected
+                    if (![...form["gender"]].some(radio => radio.checked)) {
+                        valid = false;
+                        message += "Please select a gender.\n";
+                    }
+                } else if (!element.value.trim()) {
+                    // Check if the field is empty
+                    valid = false;
+                    message += `Please fill out the ${field.replace(/_/g, " ")} field.\n`;
+                }
+            });
+
+            // Check if password and confirm password match
+            if (form["password"].value !== form["cpassword"].value) {
+                valid = false;
+                message += "Passwords do not match.\n";
+            }
+
+            // Validate password length (at least 4 characters)
+            if (form["password"].value.length < 4) {
+                valid = false;
+                message += "Password must be at least 4 characters long.\n";
+            }
+
+            // Validate email format using a regular expression
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (form["email"].value && !emailPattern.test(form["email"].value)) {
+                valid = false;
+                message += "Please enter a valid email address.\n";
+            }
+
+            // If validation fails, show the error message
+            if (!valid) {
+                alert(message);
+            }
+
+            return valid;
+        }
+
+        function ajaxSignup(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Validate form inputs
+            if (!validateForm()) {
+                return false;
+            }
+
+            // Create a FormData object to handle form inputs
+            let form = document.forms["signupForm"];
+            let formData = new FormData(form);
+
+            // Create an XMLHttpRequest object
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "../Controller/signup.php", true);
+
+            // Send the form data
+            xhttp.send(formData);
+
+            // Handle the server response
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let responseMessage = document.getElementById("responseMessage");
+
+                    if (this.responseText.startsWith("Success")) {
+                        // Display success message and redirect
+                        alert("Sign up successful!");
+                        window.location.href = "../View/login.html";
+                    } else {
+                        // Display error message
+                        responseMessage.innerHTML = this.responseText;
+                    }
+                }
+            };
+        }
+    </script>
+</head>
+<body>
+
+<form name="signupForm" onsubmit="ajaxSignup(event)" enctype="multipart/form-data">
+    <table align="center">
+        <h1 align="center">Please Fill Up The Form to Sign Up</h1>
+        <hr>
+        <tr>
+            <td><label for="user_name">Username:</label></td>
+            <td><input type="text" name="user_name" id="user_name"></td>
+        </tr>
+        <tr>
+            <td><label for="password">Password:</label></td>
+            <td><input type="password" name="password" id="password"></td>
+        </tr>
+        <tr>
+            <td><label for="cpassword">Confirm Password:</label></td>
+            <td><input type="password" name="cpassword" id="cpassword"></td>
+        </tr>
+        <tr>
+            <td><label for="email">Email:</label></td>
+            <td><input type="email" name="email" id="email"></td>
+        </tr>
+        <tr>
+            <td><label for="phone">Phone Number:</label></td>
+            <td><input type="text" name="phone" id="phone"></td>
+        </tr>
+        <tr>
+            <td>Gender:</td>
+            <td>
+                <input type="radio" name="gender" id="male" value="Male">
+                <label for="male">Male</label>
+                <input type="radio" name="gender" id="female" value="Female">
+                <label for="female">Female</label>
+                <input type="radio" name="gender" id="other" value="Other">
+                <label for="other">Other</label>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="address">Address:</label></td>
+            <td><input type="text" name="address" id="address"></td>
+        </tr>
+        <tr>
+            <td><label for="dob">Date of Birth:</label></td>
+            <td><input type="date" name="dob" id="dob"></td>
+        </tr>
+        <tr>
+            <td><label for="blood_group">Blood Group:</label></td>
+            <td>
+                <select name="blood_group" id="blood_group">
+                    <option value="">Select</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><button type="button" onclick="location.href='home.html'">Back</button></td>
+            <td><input type="reset" value="Reset" name="reset"></td>
+            <td><input type="submit" name="" value="Sign Up" onclick="ajaxSignup()" /></td>
+        </tr>
+    </table>
+    <div id="responseMessage" style="text-align: center; margin-top: 20px; color: red;"></div>
+</form>
+</body>
+</html>
